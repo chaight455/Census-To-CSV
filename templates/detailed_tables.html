@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter Your Info:</title>
+</head>
+<body>
+    <h1>Variables</h1>
+    <form method="POST" action="/detailed_tables.html">
+        <label for="key">Census API Key:</label>
+        <input type="text" id="key" name="key">
+        <label for="variables">Variables (Seperated by comma):</label>
+        <input type="text" id="variables" name="variables">
+        <label for="state">State:</label>
+        <input type="text" id="state" name="state">
+        <label for="county">County name (or * for all counties):</label>
+        <input type="text" id="county" name="county">
+        <label for="year">Year:</label>
+        <input type="text" id="year" name="year">
+        <input type="submit" value="Submit">
+    </form>
+    <p style="color: red;">{{error}}</p>
+</body>
+</html>
