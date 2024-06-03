@@ -125,4 +125,5 @@ def detailed_tables():
             headers={"Content-disposition": "attachment; filename=data.csv"}
         )
     return render_template("detailed_tables.html")
-app.run(host="0.0.0.0")
+
+app.run(8080)
