@@ -1,1 +1,1 @@
-web: gunicorn census_app:app
+web: gunicorn wsgi:app
