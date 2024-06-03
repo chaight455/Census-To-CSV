@@ -1,1 +1,1 @@
-web: waitress-serve census_app:app
+web: gunicorn census_app:app

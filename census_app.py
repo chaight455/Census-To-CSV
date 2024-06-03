@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, Response
 from pandas import DataFrame
 import requests
-from geopandas import read_file
+#from geopandas import read_file
 from io import BytesIO,StringIO
 
 app = Flask(__name__)
@@ -14,7 +14,7 @@ state_name     #State name eg. "Wisconsin"
 year           #Year of data
 
 Returns Geopandas DataFrame.
-"""
+
 def get_geo_data(state_name, year):
     state_code = get_state_code(state_name)
     # Load in tract data
@@ -24,7 +24,7 @@ def get_geo_data(state_name, year):
     # Convert data to GeoDataFrame
     geo_tract_data = read_file(BytesIO(data))
     return geo_tract_data
-
+"""
 
 """Helper Method for class"""
 def get_state_and_county_code(state_name,county_name, census_api_key):
