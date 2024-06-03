@@ -126,4 +126,5 @@ def detailed_tables():
         )
     return render_template("detailed_tables.html")
 
-app.run(8080)
+if __name__ == '__main__':
+    app.run()
