@@ -74,7 +74,7 @@ def get_state_code(state_name, census_api_key):
 def index():
     return render_template('index.html')
 
-@app.route("/detailed_tables.html", methods=['GET', 'POST'])
+@app.route("/detailed_tables", methods=['GET', 'POST'])
 def detailed_tables():
     if request.method == 'POST':
         census_api_key = request.form['key']
