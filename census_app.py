@@ -74,6 +74,106 @@ def get_state_code(state_name, census_api_key):
 def index():
     return render_template('index.html')
 
+@app.route("/data_profiles", methods=['GET', 'POST'])
+def data_profiles():
+    if request.method == 'POST':
+        census_api_key = request.form['key']
+        if census_api_key == "":
+            return render_template("data_profiles.html", error = "Error: All boxes must be filled in.")
+        if len(census_api_key) != 40:
+            return render_template("data_profiles.html", error = "Error: Invalid Census API key")
+        variables = request.form['variables']
+        state_name = request.form['state']
+        county_name = request.form['county']
+        year = request.form['year']
+        if (variables == "") or (state_name == "") or (county_name == "") or (year == ""):
+            return render_template("data_profiles.html", error = "Error: All boxes must be filled in.")
+        if int(year)>2022:
+            return render_template("data_profiles.html", error = "Error: Invalid year")
+        state_code = 0
+        county_code = 0
+        if (state_name != "*") and (county_name != "*"):
+            state_code, county_code = get_state_and_county_code(state_name,county_name,census_api_key)
+        elif (county_name == "*") and (state_name != "*"):
+            state_code = get_state_code(state_name,census_api_key)
+            county_code = "*"
+        elif (state_name == "*") and (county_name == "*"):
+          state_code = "*"
+          county_code = "*"
+        if state_code == -1:
+            return render_template("data_profiles.html", error = f"Error: State or County is incorrect. Make sure you include \"County\" after the county name.")
+        variables = variables.replace(" ", "")
+        # URL for ACS data
+        survey_url = f"https://api.census.gov/data/{year}/acs/acs5/profile?get=NAME,{variables}&for=tract:*&in=state:{state_code}&in=county:{county_code}&key={census_api_key}"
+        print(survey_url)
+        # Request ACS data
+        response = requests.request("GET", survey_url)
+        if response.status_code != 200:
+            return render_template("data_profiles.html", error = f"Error: To see your error visit {survey_url}")
+        csv_data = DataFrame(response.json()[1:], columns=response.json()[0]).to_csv()
+        # Create StringIO object to hold CSV data in memory
+        csv_stream = StringIO()
+        csv_stream.write(csv_data)
+        csv_stream.seek(0)
+
+        # Return CSV file as a response
+        return Response(
+            csv_stream,
+            mimetype="text/csv",
+            headers={"Content-disposition": "attachment; filename=data.csv"}
+        )
+    return render_template("data_profiles.html")
+
+@app.route("/subject_tables", methods=['GET', 'POST'])
+def subject_tables():
+    if request.method == 'POST':
+        census_api_key = request.form['key']
+        if census_api_key == "":
+            return render_template("subject_tables.html", error = "Error: All boxes must be filled in.")
+        if len(census_api_key) != 40:
+            return render_template("subject_tables.html", error = "Error: Invalid Census API key")
+        variables = request.form['variables']
+        state_name = request.form['state']
+        county_name = request.form['county']
+        year = request.form['year']
+        if (variables == "") or (state_name == "") or (county_name == "") or (year == ""):
+            return render_template("subject_tables.html", error = "Error: All boxes must be filled in.")
+        if int(year)>2022:
+            return render_template("subject_tables.html", error = "Error: Invalid year")
+        state_code = 0
+        county_code = 0
+        if (state_name != "*") and (county_name != "*"):
+            state_code, county_code = get_state_and_county_code(state_name,county_name,census_api_key)
+        elif (county_name == "*") and (state_name != "*"):
+            state_code = get_state_code(state_name,census_api_key)
+            county_code = "*"
+        elif (state_name == "*") and (county_name == "*"):
+          state_code = "*"
+          county_code = "*"
+        if state_code == -1:
+            return render_template("subject_tables.html", error = f"Error: State or County is incorrect. Make sure you include \"County\" after the county name.")
+        variables = variables.replace(" ", "")
+        # URL for ACS data
+        survey_url = f"https://api.census.gov/data/{year}/acs/acs5/subject?get=NAME,{variables}&for=tract:*&in=state:{state_code}&in=county:{county_code}&key={census_api_key}"
+        print(survey_url)
+        # Request ACS data
+        response = requests.request("GET", survey_url)
+        if response.status_code != 200:
+            return render_template("subject_tables.html", error = f"Error: To see your error visit {survey_url}")
+        csv_data = DataFrame(response.json()[1:], columns=response.json()[0]).to_csv()
+        # Create StringIO object to hold CSV data in memory
+        csv_stream = StringIO()
+        csv_stream.write(csv_data)
+        csv_stream.seek(0)
+
+        # Return CSV file as a response
+        return Response(
+            csv_stream,
+            mimetype="text/csv",
+            headers={"Content-disposition": "attachment; filename=data.csv"}
+        )
+    return render_template("subject_tables.html")
+
 @app.route("/detailed_tables", methods=['GET', 'POST'])
 def detailed_tables():
     if request.method == 'POST':
@@ -92,8 +192,6 @@ def detailed_tables():
             return render_template("detailed_tables.html", error = "Error: Invalid year")
         state_code = 0
         county_code = 0
-        #if (type(variables) != list):
-            #return render_template("detailed_tables.html", error = "Error: Variables must be in a comma-seperated list. e.g B01001_001E or B01001_001E,B01001_001C")
         if (state_name != "*") and (county_name != "*"):
             state_code, county_code = get_state_and_county_code(state_name,county_name,census_api_key)
         elif (county_name == "*") and (state_name != "*"):

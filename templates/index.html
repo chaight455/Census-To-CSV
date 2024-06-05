@@ -1,11 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-    <h1>American Community Survey</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>American Community Survey Data Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
 
-    <p>Choose which aspect of the ACS database to pull data from:</p>
-    
-      <p><a href="detailed_tables.html">Detailed tables (variables that start with B)</a></p>
-      <p>Subject tables (variables that start with S) UNDER CONSTRUCTION</p>
-      <p>Data Profiles (variables that start with DP) UNDER CONSTRUCTION</p>
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
 
+        .subtitle {
+            color: #34495e;
+            text-align: center;
+            font-size: 14px;
+            margin-top: -20px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #34495e;
+        }
+
+        a {
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #1abc9c;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .notice {
+            color: #e74c3c;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Census Bureau API Data Tool</h1>
+        <p class="description">This tool helps you get data from the Census API and outputs a CSV file of the data you request.</p>
+    </div>
+    <div class="container">
+        <h1>American Community Survey</h1>
+        <p class="subtitle">Check out the ACS census page <a href="https://www.census.gov/data/developers/data-sets/acs-5year.html">here</a></p>
+        <p><a href="detailed_tables">Detailed tables (variables that start with B)</a></p>
+        <p><a href="subject_tables">Subject tables (variables that start with S)</a></p>
+        <p><a href="data_profiles">Data Profiles (variables that start with DP)</a></p>
+    </div>
+    <div class="container">
+        <h1>Geographical Data as Shapely Polygons</h1>
+        <p class="notice">Polygons for census tracts UNDER CONSTRUCTION</p>
+        <p class="notice">Polygons for counties UNDER CONSTRUCTION</p>
+        <p class="notice">Polygons for states UNDER CONSTRUCTION</p>
+    </div>
+</body>
 </html>
