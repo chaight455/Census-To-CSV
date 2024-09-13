@@ -112,6 +112,7 @@ def acs_post_helper(html,request):
       url = f"https://api.census.gov/data/{year}/acs/acs5/profile?get=NAME,{variables}&for=tract:*&in=state:{state_code}&in=county:{county_code}&key={census_api_key}"
     # Request ACS data
     response = requests.request("GET", url)
+    print(url)
     if response.status_code != 200:
         return render_template(html, error = f"Error: Variables entered do not exist")
     csv_data = DataFrame(response.json()[1:], columns=response.json()[0]).to_csv()
